@@ -92,17 +92,24 @@
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="DrunkModifier.cpp" />
+    <ClCompile Include="FiniteStateMachine.cpp" />
     <ClCompile Include="FiniteStateMachTutorial.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MouseController.cpp" />
+    <ClCompile Include="PatrolState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="DrunkModifier.h" />
+    <ClInclude Include="FiniteStateMachine.h" />
     <ClInclude Include="FiniteStateMachTutorial.h" />
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardController.h" />
+    <ClInclude Include="MouseController.h" />
+    <ClInclude Include="PatrolState.h" />
+    <ClInclude Include="State.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

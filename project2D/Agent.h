@@ -15,8 +15,8 @@ public:
 	{
 		//Move	
 		m_acceleration = m_force / m_mass;
-		m_force = MathDLL::Vector2();
-		m_velocity += m_acceleration * deltaTime * m_speed;
+		m_force = MathDLL::Vector2();//reset
+		m_velocity += m_acceleration * deltaTime;
 		m_position += m_velocity * deltaTime;
 		
 		for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
@@ -43,12 +43,23 @@ public:
 	{
 		m_behaviours.push_back(behaviour);
 	}
+	void Towards(float x, float y)
+	{
+		MathDLL::Vector2 v2 = MathDLL::Vector2(x - m_position.x, y - m_position.y);
+		v2.normalise();
+		v2 *= m_speed;
+		m_velocity = v2;
+	}
+	MathDLL::Vector2 getPos()
+	{
+		return m_position;
+	}
 private:
 
 	std::list<IBehaviour *> m_behaviours;
 
 	float m_mass = 1.0f;
-	float m_speed = 10.0f;
+	float m_speed = 100.0f;
 	MathDLL::Vector2 m_position;
 	MathDLL::Vector2 m_velocity;
 	MathDLL::Vector2 m_acceleration;

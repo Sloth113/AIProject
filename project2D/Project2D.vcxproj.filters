@@ -36,6 +36,15 @@
     <ClCompile Include="DrunkModifier.cpp">
       <Filter>Source Files\FiniteStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="FiniteStateMachine.cpp">
+      <Filter>Source Files\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatrolState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -54,6 +63,18 @@
       <Filter>Header Files\FiniteStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="DrunkModifier.h">
+      <Filter>Header Files\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="FiniteStateMachine.h">
+      <Filter>Header Files\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="PatrolState.h">
+      <Filter>Header Files\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseController.h">
       <Filter>Header Files\FiniteStateMachine</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "Agent.h"
 #include "KeyboardController.h"
 #include "DrunkModifier.h"
+#include "MouseController.h"
 
 class FiniteStateMachTutorial : public aie::Application
 {
@@ -24,14 +25,6 @@ public:
 protected:
 
 	aie::Renderer2D*	m_2dRenderer;
-	aie::Texture*		m_texture;
-	aie::Texture*		m_shipTexture;
-	aie::Font*			m_font;
-	aie::Audio*			m_audio;
-
-
 	Agent m_agent;
 
-	float m_cameraX, m_cameraY;
-	float m_timer;
 };
