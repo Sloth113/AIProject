@@ -4,7 +4,9 @@ class Agent;
 class FiniteStateMachine
 {
 public:
-	void Update(Agent * agent, float deltaTime);
+	FiniteStateMachine();
+	FiniteStateMachine(State * startState);
+	void Update(Agent * agent);
 	void ChangeState(Agent * agent, State * newState);
 	State* GetCurrentState();
 	State* GetPreviousState();

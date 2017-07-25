@@ -5,5 +5,6 @@
 void DrunkModifier::Update(Agent * agent, float deltaTime)
 {
 	m_time += deltaTime;
-	agent->AddForce(MathDLL::Vector2(sinf(m_time), sinf(m_time)));
+	
+	agent->AddForce(MathDLL::Vector2(sinf(m_time)*5, sinf(m_time)*5));
 }

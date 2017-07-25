@@ -8,6 +8,8 @@
 #include "KeyboardController.h"
 #include "DrunkModifier.h"
 #include "MouseController.h"
+#include "SeekForce.h"
+#include "SteeringBehaviour.h"
 
 class FiniteStateMachTutorial : public aie::Application
 {
@@ -26,5 +28,6 @@ protected:
 
 	aie::Renderer2D*	m_2dRenderer;
 	Agent m_agent;
+	Agent m_ai;
 
 };
