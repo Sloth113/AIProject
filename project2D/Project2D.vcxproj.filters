@@ -25,6 +25,15 @@
     <Filter Include="Source Files\SteeringStuff">
       <UniqueIdentifier>{87ccc752-7cea-4c0c-a6d0-aa4b77ab750b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\BlackBoard">
+      <UniqueIdentifier>{8a1385f9-3407-466e-841b-9cba437c62b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pathfinding">
+      <UniqueIdentifier>{c849d15f-8f12-4f56-bd0e-feadb05ae1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pathfinding">
+      <UniqueIdentifier>{9dc75ce0-2603-497f-8f54-ecc79646884f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -54,8 +63,11 @@
     <ClCompile Include="PatrolState.cpp">
       <Filter>Source Files\FiniteStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="PathsApp.cpp">
+      <Filter>Source Files\Pathfinding</Filter>
+    </ClCompile>
     <ClCompile Include="SeekForce.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\SteeringStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="SeekForce.h">
       <Filter>Header Files\SteeringStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackBoard.h">
+      <Filter>Header Files\BlackBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="PathsApp.h">
+      <Filter>Header Files\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

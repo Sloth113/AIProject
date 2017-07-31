@@ -83,6 +83,10 @@ public:
 	{
 		return m_speed;
 	}
+	void SetPos(MathDLL::Vector2 pos)
+	{
+		m_position = pos;
+	}
 private:
 
 	std::list<IBehaviour *> m_behaviours;
