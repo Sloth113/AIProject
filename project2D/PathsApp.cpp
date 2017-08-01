@@ -24,7 +24,39 @@ bool PathsApp::startup()
 
 	m_2dRenderer = new aie::Renderer2D();
 
-	 map.createVertex(MathDLL::Vector2(640, 50));
+	// map.createVertex(MathDLL::Vector2(640, 50));
+
+	 Vertex<MathDLL::Vector2> * arr [51][29];
+	 for (int i = 0; i < 51; i++)
+	 {
+		 for (int j = 0; j < 29; j++)
+		 {
+			 arr[i][j] = nullptr;
+		 }
+	 }
+	 int r = 0, c = 0;
+	 for (int i = 10, r =0; i < 1270; i += 25, r++)
+	 {
+		 for (int j = 10, c = 0; j < 710; j += 25, c++)
+		 {
+			 if (rand() % 2 != 0)
+			 {
+					 arr[r][c] = map.createVertex(MathDLL::Vector2(i, j));	 
+					 if (r > 0 && arr[r - 1][c] != nullptr)
+					 {
+						 map.addEdge(arr[r][c], arr[r - 1][c], 1);
+						 map.addEdge(arr[r - 1][c], arr[r][c], 1);
+					 }
+					 if (c > 0 && arr[r][c - 1] != nullptr)
+					 {
+						 
+						 map.addEdge(arr[r][c], arr[r][c - 1], 1);
+						 map.addEdge(arr[r][c - 1], arr[r][c], 1);
+					 }
+			 }
+		 }
+	 }
+
 
 
 	 m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
@@ -47,7 +79,7 @@ void PathsApp::update(float deltaTime)
 
 	m_agent.Update(deltaTime);
 	m_ai.Update(deltaTime);
-
+	
 	//Map creation
 	bool nodePress = false;
 	if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT))
@@ -98,7 +130,13 @@ void PathsApp::update(float deltaTime)
 	}
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && selected != nullptr)
 	{
-		DijkstraThing(map);
+		//Remembers old path, could just clear or do fancy stuff
+		if (m_path.size() > 0)
+		{
+			m_path.reverse();
+		}
+		//DijkstraThing(map);
+		AStarOne(map, *(map.m_verts.begin()), selected);
 		//path from selected to origin
 		while (selected != selected->parent && selected->parent != nullptr)
 		{
@@ -110,6 +148,7 @@ void PathsApp::update(float deltaTime)
 		m_agent.SetPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
 		selected = false;
 		addEdge = false;
+		std::cout << "Nodes:" << m_path.size() << std::endl;
 	}
 
 	if (m_path.size() > 0)
@@ -124,6 +163,13 @@ void PathsApp::update(float deltaTime)
 			if(m_path.size() > 0)
 				m_agent.SetPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
 		}
+	}
+
+	if (selected != nullptr && input->wasKeyPressed(aie::INPUT_KEY_C))
+	{
+		map.removeVertex(selected);
+		selected = false;
+		addEdge = false;
 	}
 
 	// exit the application
@@ -169,6 +215,11 @@ void PathsApp::draw()
 		}
 	}
 
+	if (selected != nullptr)
+	{
+		m_2dRenderer->setRenderColour(0, 1, 0);
+		m_2dRenderer->drawCircle((selected)->data.x, (selected)->data.y, 10);
+	}
 
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -198,7 +249,6 @@ void PathsApp::DijkstraThing(Graph<MathDLL::Vector2> & graph)
 		Vertex<MathDLL::Vector2> * node = pQueue.top();
 		pQueue.pop();
 		node->traversed = true;
-
 		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
 		{
 			if (!(*i)->target->traversed)
@@ -218,3 +268,70 @@ void PathsApp::DijkstraThing(Graph<MathDLL::Vector2> & graph)
 
 }
 
+void PathsApp::AStarOne(Graph<MathDLL::Vector2> & graph, Vertex<MathDLL::Vector2> * start, Vertex<MathDLL::Vector2> * end)
+{
+	std::list<Vertex<MathDLL::Vector2>> path;
+	//Set defaults
+	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
+	{
+		(*i)->gScore = 9999999999; (*i)->parent = nullptr; (*i)->traversed = false;
+	}
+
+	auto cmp = [](Vertex<MathDLL::Vector2> * left, Vertex<MathDLL::Vector2> * right)
+	{
+		return left->gScore > right->gScore;
+	};
+	std::priority_queue<Vertex<MathDLL::Vector2> *, std::vector<Vertex<MathDLL::Vector2>*>, decltype(cmp)> pQueue(cmp);
+	std::vector<Vertex<MathDLL::Vector2>*> closedList;
+
+
+	pQueue.push(start);
+	pQueue.top()->gScore = 0;
+	pQueue.top()->parent = pQueue.top();
+	
+
+	while (pQueue.size() > 0)
+	{
+		Vertex<MathDLL::Vector2> * node = pQueue.top();
+		pQueue.pop();
+		node->traversed = true;
+		closedList.push_back(node);
+
+		if (node == end)
+		{
+			return;
+			std::cout << "Breaking here";
+			//Make path
+		}
+
+		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
+		{
+			if (!(*i)->target->traversed)
+			{
+				MathDLL::Vector2 dis = end->data - (*i)->target->data;
+				float hScore = dis.getMagSquare();
+				float gScore = node->gScore + (*i)->weight;
+				float fScore = gScore + hScore;
+				
+				if ((*i)->target->fScore > fScore)
+				{
+					(*i)->target->gScore = gScore;
+					(*i)->target->hScore = hScore;
+					(*i)->target->fScore = fScore;
+					(*i)->target->parent = node;
+				}
+				//ADD TO LIST IF NOT ALREADY THERE
+				//if(!(std::find(closedList.begin(), closedList.end(), (*i)->target) != closedList.end()))
+					pQueue.push((*i)->target);
+			}
+		}
+	}
+	//Make path
+	return;
+
+}
+std::list<Vertex<MathDLL::Vector2>> MakePath(Vertex<MathDLL::Vector2> * goal)
+{
+	std::list<Vertex<MathDLL::Vector2>> path;
+	return path;
+}

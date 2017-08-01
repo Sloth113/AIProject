@@ -32,6 +32,8 @@ public:
 
 	//For pathfinding
 	float gScore;
+	float hScore;
+	float fScore;
 	Vertex * parent;
 	bool traversed;
 	//
