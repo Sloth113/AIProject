@@ -11,6 +11,8 @@
 #include "SeekForce.h"
 #include "SteeringBehaviour.h"
 #include "Graph.h"
+#include "ArrivalForce.h"
+#include "WanderForce.h"
 
 #include <functional>
 #include <queue>
@@ -32,6 +34,8 @@ public:
 
 protected:
 
+	aie::Font*			m_font;
+
 	aie::Renderer2D*	m_2dRenderer;
 	Agent m_agent;
 	Agent m_ai;
@@ -42,5 +46,7 @@ protected:
 	std::list<Vertex<MathDLL::Vector2>> MakePath(Vertex<MathDLL::Vector2> * goal);
 	bool addEdge;
 	Vertex<MathDLL::Vector2> * selected;
+	Vertex<MathDLL::Vector2> * startSel;
+
 	std::list<Vertex<MathDLL::Vector2>* > m_path;
 };

@@ -56,14 +56,8 @@ public:
 	{
 		m_behaviours.push_back(behaviour);
 	}
-	void Towards(float x, float y)
-	{
-		MathDLL::Vector2 v2 = MathDLL::Vector2(x - m_position.x, y - m_position.y);
-		v2.normalise();
-		v2 *= m_speed*5;
-		m_velocity = v2;
-	}
-	MathDLL::Vector2 getPos()
+
+	MathDLL::Vector2 GetPos()
 	{
 		return m_position;
 	}
@@ -92,9 +86,9 @@ private:
 	std::list<IBehaviour *> m_behaviours;
 	FiniteStateMachine m_fsm;
 
-	float m_maxVel = 50.0f;
+	float m_maxVel = 70.0f;
 	float m_mass = 1.0f;
-	float m_speed = 20.0f;
+	float m_speed = 50.0f;
 	MathDLL::Vector2 m_position;
 	MathDLL::Vector2 m_velocity;
 	MathDLL::Vector2 m_acceleration;

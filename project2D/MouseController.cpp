@@ -4,5 +4,5 @@
 void MouseController::Update(Agent * agent, float deltaTime)
 {
 	aie::Input* input = aie::Input::getInstance();
-	agent->Towards(input->getMouseX(), input->getMouseY());
+	agent->SetPos(MathDLL::Vector2(input->getMouseX(), input->getMouseY()));
 }

@@ -15,10 +15,13 @@ SeekForce::SeekForce(MathDLL::Vector2 target)
 MathDLL::Vector2 SeekForce::getForce(Agent * agent)
 {
 	if (m_agent != nullptr)
-		m_target = m_agent->getPos();
+		m_target = m_agent->GetPos();
 	
-		MathDLL::Vector2 vel = (m_target - agent->getPos()) * agent->GetSpeed(); //STILL MAX
-		MathDLL::Vector2 force = vel - agent->GetVel();
+	MathDLL::Vector2 vel = (m_target - agent->GetPos());
+	if (vel.getMagSquare() != 0)
+		vel.normalise();
+	vel = vel * agent->GetSpeed(); //STILL MAX
+	MathDLL::Vector2 force = vel - agent->GetVel();
 	
 	return force;
 }

@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
+    <ClCompile Include="ArrivalForce.cpp" />
     <ClCompile Include="DrunkModifier.cpp" />
     <ClCompile Include="FiniteStateMachine.cpp" />
     <ClCompile Include="FiniteStateMachTutorial.cpp" />
@@ -101,10 +102,12 @@
     <ClCompile Include="PatrolState.cpp" />
     <ClCompile Include="SeekForce.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
+    <ClCompile Include="WanderForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Application2D.h" />
+    <ClInclude Include="ArrivalForce.h" />
     <ClInclude Include="BlackBoard.h" />
     <ClInclude Include="DrunkModifier.h" />
     <ClInclude Include="FiniteStateMachine.h" />
@@ -119,6 +122,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="SteeringForce.h" />
+    <ClInclude Include="WanderForce.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
