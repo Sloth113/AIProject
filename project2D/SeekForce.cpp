@@ -1,6 +1,12 @@
 #include "SeekForce.h"
 #include "Agent.h"
 
+SeekForce::SeekForce()
+{
+	m_target = MathDLL::Vector2();
+	m_agent = nullptr;
+}
+
 SeekForce::SeekForce(Agent * target)
 {
 	m_agent = target;
@@ -20,7 +26,7 @@ MathDLL::Vector2 SeekForce::getForce(Agent * agent)
 	MathDLL::Vector2 vel = (m_target - agent->GetPos());
 	if (vel.getMagSquare() != 0)
 		vel.normalise();
-	vel = vel * agent->GetSpeed(); //STILL MAX
+	vel = vel * agent->GetSpeed(); //
 	MathDLL::Vector2 force = vel - agent->GetVel();
 	
 	return force;
