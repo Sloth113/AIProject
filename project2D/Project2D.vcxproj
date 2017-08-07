@@ -109,6 +109,7 @@
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="ArrivalForce.h" />
     <ClInclude Include="BlackBoard.h" />
+    <ClInclude Include="Composite.h" />
     <ClInclude Include="DrunkModifier.h" />
     <ClInclude Include="FiniteStateMachine.h" />
     <ClInclude Include="FiniteStateMachTutorial.h" />
@@ -119,6 +120,8 @@
     <ClInclude Include="PathsApp.h" />
     <ClInclude Include="PatrolState.h" />
     <ClInclude Include="SeekForce.h" />
+    <ClInclude Include="Selector.h" />
+    <ClInclude Include="Sequence.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="SteeringForce.h" />

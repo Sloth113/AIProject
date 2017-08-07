@@ -5,5 +5,5 @@
 class MouseController : public IBehaviour
 {
 public:
-	virtual void Update(Agent * agent, float deltaTime);
+	virtual bool Update(Agent * agent, float deltaTime);
 };

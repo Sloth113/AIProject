@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Pathfinding">
       <UniqueIdentifier>{9dc75ce0-2603-497f-8f54-ecc79646884f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Trees">
+      <UniqueIdentifier>{6c8a4444-dbcf-48e1-b89f-f9b55415feb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -130,6 +133,15 @@
     </ClInclude>
     <ClInclude Include="WanderForce.h">
       <Filter>Header Files\SteeringStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Composite.h">
+      <Filter>Header Files\Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence.h">
+      <Filter>Header Files\Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Selector.h">
+      <Filter>Header Files\Trees</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

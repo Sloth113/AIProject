@@ -20,13 +20,13 @@ bool PathsApp::startup()
 	//m_agent.AddBehaviour(new KeyboardController());
 	//m_agent.AddBehaviour(new MouseController());
 	//m_agent.AddBehaviour(new DrunkModifier());
-	m_agent.AddBehaviour(new SteeringBehaviour(new WanderForce()));
+	//m_agent.AddBehaviour(new SteeringBehaviour(new WanderForce()));
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_2dRenderer = new aie::Renderer2D();
 
 	// map.createVertex(MathDLL::Vector2(640, 50));
-
+	
 	 Vertex<MathDLL::Vector2> * arr [51][29];
 	 for (int i = 0; i < 51; i++)
 	 {
@@ -57,9 +57,17 @@ bool PathsApp::startup()
 			 }
 		 }
 	 }
+	 for (auto i = map.m_verts.begin(); i != map.m_verts.end(); i++)
+	 {
+		 if ((*i)->edges.size() <= 0)
+		 {
+			 i = map.m_verts.erase(i);
+		 }
+	 }
 
-
+	 
 	 startSel = map.m_verts.front();
+	
 	 //m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
 	 m_ai.AddBehaviour(new SteeringBehaviour(new ArrivalForce(&m_agent)));
 	//m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(MathDLL::Vector2((*(map.m_verts.begin()))->data.x, (*(map.m_verts.begin()))->data.y))));
@@ -205,6 +213,12 @@ void PathsApp::draw()
 	//Draw map
 	for (auto i = map.m_verts.begin(); i != map.m_verts.end(); i++)
 	{
+		if ((*i)->parent != nullptr)
+		{
+			m_2dRenderer->setRenderColour(1, 0, 1, 0.5f);
+			m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
+		}
+		m_2dRenderer->setRenderColour(1, 1, 1, 0.5f);
 		m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
 		for (auto j = (*i)->edges.begin(); j != (*i)->edges.end(); j++)
 		{
@@ -333,7 +347,8 @@ void PathsApp::AStarOne(Graph<MathDLL::Vector2> & graph, Vertex<MathDLL::Vector2
 			if (!(*i)->target->traversed)
 			{
 				MathDLL::Vector2 dis = end->data - (*i)->target->data;
-				float nextHScore = dis.getMagSquare();
+				float nextHScore = (dis.getMagSquare());
+				std::cout << "H:" << nextHScore << std::endl;
 				float nextGScore = node->gScore + (*i)->weight;
 				float newScore = node->gScore + (*i)->weight + nextHScore;
 				if (newScore < (*i)->target->fScore)
@@ -350,6 +365,7 @@ void PathsApp::AStarOne(Graph<MathDLL::Vector2> & graph, Vertex<MathDLL::Vector2
 				}
 			}
 		}
+		std::cout << ":END:" << std::endl;
 	}
 }
 std::list<Vertex<MathDLL::Vector2>> MakePath(Vertex<MathDLL::Vector2> * goal)
