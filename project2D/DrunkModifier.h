@@ -5,7 +5,7 @@
 class DrunkModifier : public IBehaviour
 {
 public:
-	virtual bool Update(Agent * agent, float deltaTime);
+	virtual BehaviourResult Update(Agent * agent, float deltaTime);
 private:
 	float m_time;
 };

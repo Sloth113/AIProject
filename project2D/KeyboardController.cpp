@@ -1,7 +1,7 @@
 #include "KeyboardController.h"
 #include "Agent.h"
 #include "Input.h"
-bool KeyboardController::Update(Agent * agent, float deltaTime)
+BehaviourResult KeyboardController::Update(Agent * agent, float deltaTime)
 {
 
 	aie::Input* input = aie::Input::getInstance();
@@ -21,5 +21,5 @@ bool KeyboardController::Update(Agent * agent, float deltaTime)
 		{
 			agent->AddForce(MathDLL::Vector2(10, 0));
 		}
-		return true;
+		return BehaviourResult::Success;
 }

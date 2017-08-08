@@ -27,7 +27,7 @@ bool PathsApp::startup()
 
 	// map.createVertex(MathDLL::Vector2(640, 50));
 	
-	 Vertex<MathDLL::Vector2> * arr [51][29];
+
 	 for (int i = 0; i < 51; i++)
 	 {
 		 for (int j = 0; j < 29; j++)
@@ -50,7 +50,6 @@ bool PathsApp::startup()
 					 }
 					 if (c > 0 && arr[r][c - 1] != nullptr)
 					 {
-						 
 						 map.addEdge(arr[r][c], arr[r][c - 1], 1);
 						 map.addEdge(arr[r][c - 1], arr[r][c], 1);
 					 }
@@ -97,7 +96,7 @@ void PathsApp::update(float deltaTime)
 		for (auto i = map.m_verts.begin(); i != map.m_verts.end(); i++)
 		{
 		
-			if (input->getMouseX() > ((*i)->data.x - 10) && input->getMouseX() < ((*i)->data.x + 10) && input->getMouseY() > ((*i)->data.y - 10) && input->getMouseY() < ((*i)->data.y + 10))
+			if (input->getMouseX() > ((*i)->data.x - 12) && input->getMouseX() < ((*i)->data.x + 12) && input->getMouseY() > ((*i)->data.y - 12) && input->getMouseY() < ((*i)->data.y + 12))
 				{
 					if (addEdge && selected != nullptr && selected != (*i))
 					{
@@ -206,25 +205,28 @@ void PathsApp::draw()
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
-	m_agent.Draw(m_2dRenderer);
-	m_ai.Draw(m_2dRenderer);
+
 
 	m_2dRenderer->setRenderColour(1, 1, 1, 0.5f);
 	//Draw map
+	m_2dRenderer->setRenderColour(0.5,0.5,0.5, 1);
+	
+
 	for (auto i = map.m_verts.begin(); i != map.m_verts.end(); i++)
 	{
 		if ((*i)->parent != nullptr)
 		{
 			m_2dRenderer->setRenderColour(1, 0, 1, 0.5f);
-			m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
+		//	m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
 		}
 		m_2dRenderer->setRenderColour(1, 1, 1, 0.5f);
-		m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
+	//	m_2dRenderer->drawCircle((*i)->data.x, (*i)->data.y, 5);
+		m_2dRenderer->drawBox((*i)->data.x, (*i)->data.y, 25, 25);
 		for (auto j = (*i)->edges.begin(); j != (*i)->edges.end(); j++)
 		{
-			m_2dRenderer->drawLine((*i)->data.x, (*i)->data.y, (*j)->target->data.x, (*j)->target->data.y, (*j)->weight);
+		//	m_2dRenderer->drawLine((*i)->data.x, (*i)->data.y, (*j)->target->data.x, (*j)->target->data.y, (*j)->weight);
 			m_2dRenderer->setRenderColour(0, 0, 1, 0.5f);
-			m_2dRenderer->drawCircle((*j)->target->data.x, (*j)->target->data.y, 1);
+		//	m_2dRenderer->drawCircle((*j)->target->data.x, (*j)->target->data.y, 1);
 			m_2dRenderer->setRenderColour(1, 1, 1, 0.5f);
 		}
 	}
@@ -254,6 +256,9 @@ void PathsApp::draw()
 	sprintf_s(fps, 32, "SPEED: %F", m_ai.GetVel().magnitude());
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 	
+	m_agent.Draw(m_2dRenderer);
+	m_ai.Draw(m_2dRenderer);
+
 	// done drawing sprites
 	m_2dRenderer->end();
 }

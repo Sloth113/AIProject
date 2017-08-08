@@ -92,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="ArrivalForce.cpp" />
+    <ClCompile Include="BehaviourApp.cpp" />
     <ClCompile Include="DrunkModifier.cpp" />
     <ClCompile Include="FiniteStateMachine.cpp" />
     <ClCompile Include="FiniteStateMachTutorial.cpp" />
@@ -106,8 +107,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="AgentMk2.h" />
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="ArrivalForce.h" />
+    <ClInclude Include="BehaviourApp.h" />
     <ClInclude Include="BlackBoard.h" />
     <ClInclude Include="Composite.h" />
     <ClInclude Include="DrunkModifier.h" />

@@ -7,7 +7,7 @@ class SteeringBehaviour : public IBehaviour
 {
 public:
 	SteeringBehaviour(SteeringForce * force);
-	virtual bool Update(Agent *pAgent, float deltaTime);
+	virtual BehaviourResult Update(Agent *pAgent, float deltaTime);
 private:
 	SteeringForce * steerForce;
 };

@@ -1,7 +1,13 @@
 #pragma once
+enum BehaviourResult
+{
+	Success,
+	Failure,
+	Pending
+};
 class Agent;
 class IBehaviour
 {
 public:
-	virtual bool Update(Agent *pAgent, float deltaTime) = 0;
+	virtual BehaviourResult Update(Agent *pAgent, float deltaTime) = 0;
 };

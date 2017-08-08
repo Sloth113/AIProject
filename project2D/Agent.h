@@ -30,12 +30,16 @@ public:
 
 		m_force = MathDLL::Vector2();//reset
 
+
+		//Behaviours
 		for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
 		{
 			(*iter)->Update(this, deltaTime);
 		}
+		/*
 		if(m_fsm.GetCurrentState() != nullptr)
 			m_fsm.Update(this);
+			*/
 
 	}
 	virtual void Draw(aie::Renderer2D * renderer)

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
@@ -19,12 +18,12 @@
 #include <vector>
 #include <algorithm>
 
-class PathsApp : public aie::Application
+class BehaviourApp : public aie::Application
 {
 public:
 
-	PathsApp();
-	virtual ~PathsApp();
+	BehaviourApp();
+	virtual ~BehaviourApp();
 
 	virtual bool startup();
 	virtual void shutdown();
@@ -43,7 +42,6 @@ protected:
 
 	void DijkstraThing(Graph<MathDLL::Vector2> & graph);
 	void AStarOne(Graph<MathDLL::Vector2> & graph, Vertex<MathDLL::Vector2> * start, Vertex<MathDLL::Vector2> * end);
-	std::list<Vertex<MathDLL::Vector2>> MakePath(Vertex<MathDLL::Vector2> * goal);
 	bool addEdge;
 	Vertex<MathDLL::Vector2> * selected;
 	Vertex<MathDLL::Vector2> * startSel;

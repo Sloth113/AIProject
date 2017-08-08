@@ -37,6 +37,15 @@
     <Filter Include="Header Files\Trees">
       <UniqueIdentifier>{6c8a4444-dbcf-48e1-b89f-f9b55415feb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Trees">
+      <UniqueIdentifier>{b7417a3d-05d4-459a-aff2-902c9a4f6ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Trees\Actions">
+      <UniqueIdentifier>{4484f904-29ea-4405-a4be-e74687a2bb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Trees\Conditions">
+      <UniqueIdentifier>{5406e6fa-d432-424d-9ad2-2b523d04b12c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -77,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="WanderForce.cpp">
       <Filter>Source Files\SteeringStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourApp.cpp">
+      <Filter>Source Files\Trees</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +153,12 @@
       <Filter>Header Files\Trees</Filter>
     </ClInclude>
     <ClInclude Include="Selector.h">
+      <Filter>Header Files\Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentMk2.h">
+      <Filter>Header Files\Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourApp.h">
       <Filter>Header Files\Trees</Filter>
     </ClInclude>
   </ItemGroup>

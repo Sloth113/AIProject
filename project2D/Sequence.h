@@ -2,15 +2,15 @@
 #include "Composite.h"
 class Sequence : public Composite
 {
-	virtual bool Update(Agent *pAgent, float deltaTime)
+	virtual BehaviourResult Update(Agent *pAgent, float deltaTime)
 	{
 		for (auto child = children.begin(); child != children.end(); child++)
 		{
-			if ((*child)->Update(pAgent, deltaTime) == false)
+			if ((*child)->Update(pAgent, deltaTime) == BehaviourResult::Failure)
 			{
-				return false;
+				return BehaviourResult::Failure;
 			}
 		}
-		return true;
+		return BehaviourResult::Success;
 	}
 };
