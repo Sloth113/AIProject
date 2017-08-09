@@ -46,6 +46,15 @@
     <Filter Include="Header Files\Trees\Conditions">
       <UniqueIdentifier>{5406e6fa-d432-424d-9ad2-2b523d04b12c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Trees\Conditions">
+      <UniqueIdentifier>{1e8584b0-4598-4632-a12d-68e574daed31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SteeringStuff\Flocking">
+      <UniqueIdentifier>{1bb32327-fc2c-40a2-bfde-3628cf420577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SteeringStuff\Flocking">
+      <UniqueIdentifier>{cf5dcee0-ae41-4fb9-9c08-4adf43b8161b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -89,6 +98,21 @@
     </ClCompile>
     <ClCompile Include="BehaviourApp.cpp">
       <Filter>Source Files\Trees</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeForce.cpp">
+      <Filter>Source Files\SteeringStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="CloseToCondition.cpp">
+      <Filter>Source Files\Trees\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparationForce.cpp">
+      <Filter>Source Files\SteeringStuff\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="CohesionForce.cpp">
+      <Filter>Source Files\SteeringStuff\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="AlignmentForce.cpp">
+      <Filter>Source Files\SteeringStuff\Flocking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +184,21 @@
     </ClInclude>
     <ClInclude Include="BehaviourApp.h">
       <Filter>Header Files\Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeForce.h">
+      <Filter>Header Files\SteeringStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="CloseToCondition.h">
+      <Filter>Header Files\Trees\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparationForce.h">
+      <Filter>Header Files\SteeringStuff\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignmentForce.h">
+      <Filter>Header Files\SteeringStuff\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="CohesionForce.h">
+      <Filter>Header Files\SteeringStuff\Flocking</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

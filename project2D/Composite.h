@@ -5,6 +5,5 @@ class Composite : public IBehaviour
 {
 public:
 	virtual BehaviourResult Update(Agent *pAgent, float deltaTime) = 0;
-protected:
 	std::list<IBehaviour *> children;
 };

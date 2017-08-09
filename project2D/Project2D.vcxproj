@@ -90,32 +90,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlignmentForce.cpp" />
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="ArrivalForce.cpp" />
     <ClCompile Include="BehaviourApp.cpp" />
+    <ClCompile Include="CloseToCondition.cpp" />
+    <ClCompile Include="CohesionForce.cpp" />
     <ClCompile Include="DrunkModifier.cpp" />
     <ClCompile Include="FiniteStateMachine.cpp" />
     <ClCompile Include="FiniteStateMachTutorial.cpp" />
+    <ClCompile Include="FleeForce.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseController.cpp" />
     <ClCompile Include="PathsApp.cpp" />
     <ClCompile Include="PatrolState.cpp" />
     <ClCompile Include="SeekForce.cpp" />
+    <ClCompile Include="SeparationForce.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
     <ClCompile Include="WanderForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="AgentMk2.h" />
+    <ClInclude Include="AlignmentForce.h" />
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="ArrivalForce.h" />
     <ClInclude Include="BehaviourApp.h" />
     <ClInclude Include="BlackBoard.h" />
+    <ClInclude Include="CohesionForce.h" />
     <ClInclude Include="Composite.h" />
     <ClInclude Include="DrunkModifier.h" />
     <ClInclude Include="FiniteStateMachine.h" />
     <ClInclude Include="FiniteStateMachTutorial.h" />
+    <ClInclude Include="FleeForce.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardController.h" />
@@ -124,10 +132,12 @@
     <ClInclude Include="PatrolState.h" />
     <ClInclude Include="SeekForce.h" />
     <ClInclude Include="Selector.h" />
+    <ClInclude Include="SeparationForce.h" />
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="SteeringForce.h" />
+    <ClInclude Include="CloseToCondition.h" />
     <ClInclude Include="WanderForce.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

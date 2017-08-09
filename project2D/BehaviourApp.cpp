@@ -18,17 +18,49 @@ bool BehaviourApp::startup()
 	m_agent = Agent(MathDLL::Vector2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_ai = Agent(MathDLL::Vector2(100, 100));
 	//m_agent.AddBehaviour(new KeyboardController());
-	//m_agent.AddBehaviour(new MouseController());
+	m_agent.AddBehaviour(new MouseController());
 	//m_agent.AddBehaviour(new DrunkModifier());
 	//m_agent.AddBehaviour(new SteeringBehaviour(new WanderForce()));
+
+	
+
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_2dRenderer = new aie::Renderer2D();
 
+
+	//Behaviour tree
+	//Wander but avoid sequence
+	Sequence * closeFlee = new Sequence();
+	closeFlee->children.push_back(new CloseToCondition(100, &m_agent));
+	closeFlee->children.push_back(new SteeringBehaviour(new FleeForce(&m_agent)));
+
+	Selector * wanderFlee = new Selector();
+	wanderFlee->children.push_back(closeFlee);
+	wanderFlee->children.push_back(new SteeringBehaviour(new WanderForce()));
+
+	m_ai.AddBehaviour(wanderFlee);
 	
 	//m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
-	m_ai.AddBehaviour(new SteeringBehaviour(new ArrivalForce(&m_agent)));
+	//m_ai.AddBehaviour(new SteeringBehaviour(new FleeForce(&m_agent)));
+	//m_ai.AddBehaviour(new SteeringBehaviour(new WanderForce()));
+	//m_ai.AddBehaviour(new SteeringBehaviour(new ArrivalForce(&m_agent)));
 	//m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(MathDLL::Vector2((*(map.m_verts.begin()))->data.x, (*(map.m_verts.begin()))->data.y))));
+
+
+	//Flock
+	flockSize = 10;
+	m_flock = new Agent[flockSize];
+	for (int i = 0; i < flockSize; i++)
+	{
+		m_flock[i] = Agent(MathDLL::Vector2(rand() % 1280, rand() % 720));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new SeparationForce()));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new CohesionForce()));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new AlignmentForce()));
+			
+	}
+
+
 
 	selected = nullptr;
 	addEdge = false;
@@ -37,7 +69,7 @@ bool BehaviourApp::startup()
 
 void BehaviourApp::shutdown()
 {
-
+	delete[] m_flock;
 }
 
 void BehaviourApp::update(float deltaTime)
@@ -47,6 +79,11 @@ void BehaviourApp::update(float deltaTime)
 
 	m_agent.Update(deltaTime);
 	m_ai.Update(deltaTime);
+
+	for (int i = 0; i < flockSize; i++)
+	{
+		m_flock[i].Update(deltaTime);
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -72,7 +109,10 @@ void BehaviourApp::draw()
 
 	m_agent.Draw(m_2dRenderer);
 	m_ai.Draw(m_2dRenderer);
-
+	for (int i = 0; i < flockSize; i++)
+	{
+		m_flock[i].Draw(m_2dRenderer);
+	}
 	// done drawing sprites
 	m_2dRenderer->end();
 }

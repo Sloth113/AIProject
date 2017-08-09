@@ -12,6 +12,16 @@
 #include "Graph.h"
 #include "ArrivalForce.h"
 #include "WanderForce.h"
+#include "FleeForce.h"
+#include "CloseToCondition.h"
+#include "Sequence.h"
+#include "Selector.h"
+//Flocking
+#include "SeparationForce.h"
+#include "CohesionForce.h"
+#include "AlignmentForce.h"
+
+
 
 #include <functional>
 #include <queue>
@@ -38,6 +48,8 @@ protected:
 	aie::Renderer2D*	m_2dRenderer;
 	Agent m_agent;
 	Agent m_ai;
+	Agent * m_flock;
+	int flockSize;
 	Graph<MathDLL::Vector2> map;
 
 	void DijkstraThing(Graph<MathDLL::Vector2> & graph);
