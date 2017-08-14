@@ -5,4 +5,5 @@ class SteeringForce
 {
 public:
 	virtual MathDLL::Vector2 getForce(Agent * agent) = 0;
+	float m_weight;
 };
