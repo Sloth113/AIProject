@@ -28,9 +28,9 @@
 #include <vector>
 #include <algorithm>
 
-const int GRID_X = 50;
-const int GRID_Y = 28;
-const int GRID_SPACE = 25;
+const int GRID_X = 25;
+const int GRID_Y = 14;
+const int GRID_SPACE = 50;
 
 struct PathNode
 {
@@ -40,9 +40,14 @@ struct PathNode
 		rough,
 		solid
 	};
+	struct Data
+	{
+		Type state;
+		int weight;
+	};
 
 	MathDLL::Vector2 pos;
-	Type state;
+	Data info;
 };
 
 class ProjectApp : public aie::Application
@@ -63,6 +68,10 @@ protected:
 	aie::Font*			m_font;
 
 	aie::Renderer2D*	m_2dRenderer;
+
+	aie::Texture * m_floorT;
+	aie::Texture * m_roughT;
+	aie::Texture * m_spikesT;
 	
 	
 	Agent m_mainAgent;
@@ -75,7 +84,8 @@ protected:
 
 	void DijkstraThing(Graph<PathNode> & graph);
 	void AStarOne(Graph<PathNode> & graph, Vertex<PathNode> * start, Vertex<PathNode> * end);
-	
+	std::list<Vertex<PathNode>*> AStar(Graph<PathNode> & graph, Vertex<PathNode> * start, Vertex<PathNode> * end, std::function<void()> heuristic);
+	std::list<Vertex<PathNode>*>  MakePath(Vertex<PathNode> * start, Vertex<PathNode> * end);
 	//For map building
 	Vertex<PathNode> * arr[GRID_X][GRID_Y];
 
