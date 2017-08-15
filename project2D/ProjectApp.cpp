@@ -50,9 +50,9 @@ bool ProjectApp::startup()
 			if(ran > 7)
 				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::clear, 1}});
 			if (ran <= 7 && ran >= 3)
-				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::rough, 5} });
+				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::rough, 25} });
 			if (ran < 3)
-				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::solid, 10} });
+				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::solid, 100} });
 
 			//ADD THE EDGES
 			if (i > 0)
@@ -365,7 +365,7 @@ std::list<Vertex<PathNode>*> ProjectApp::AStar(Graph<PathNode>& graph, Vertex<Pa
 	//Set defaults
 	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
 	{
-		(*i)->gScore = 9999999999; (*i)->hScore = 9999999999; (*i)->fScore = 9999999999; (*i)->parent = nullptr; (*i)->traversed = false;
+		(*i)->gScore = FLT_MAX; (*i)->hScore = FLT_MAX; (*i)->fScore = FLT_MAX; (*i)->parent = nullptr; (*i)->traversed = false;
 	}
 	//Initial
 	start->parent = start;
@@ -402,8 +402,12 @@ std::list<Vertex<PathNode>*> ProjectApp::AStar(Graph<PathNode>& graph, Vertex<Pa
 				std::cout << newFScore << " < " << (*i)->target->fScore << std::endl;
 				if (newFScore < (*i)->target->fScore)
 				{
+					
 					(*i)->target->parent = node;
-					(*i)->target->fScore = newFScore;
+					(*i)->target->gScore = (node->gScore + (*i)->weight);
+					(*i)->target->hScore = (end->data.pos - (*i)->target->data.pos).magnitude();
+					//(*i)->target->fScore = newFScore;
+					(*i)->target->fScore = (*i)->target->gScore + (*i)->target->hScore;
 					//Not already in there
 					if (std::find(pQueue.begin(), pQueue.end(), (*i)->target) == pQueue.end() && !(*i)->target->traversed)
 					{
