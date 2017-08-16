@@ -53,6 +53,8 @@ bool PathsApp::startup()
 						 map.addEdge(arr[r][c], arr[r][c - 1], 1);
 						 map.addEdge(arr[r][c - 1], arr[r][c], 1);
 					 }
+					 //Diagonals
+
 			 }
 		 }
 	 }

@@ -114,6 +114,15 @@
     <ClCompile Include="AlignmentForce.cpp">
       <Filter>Source Files\SteeringStuff\Flocking</Filter>
     </ClCompile>
+    <ClCompile Include="Avoidance.cpp">
+      <Filter>Source Files\SteeringStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowPathCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -199,6 +208,18 @@
     </ClInclude>
     <ClInclude Include="CohesionForce.h">
       <Filter>Header Files\SteeringStuff\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="Avoidance.h">
+      <Filter>Header Files\SteeringStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowPath.h">
+      <Filter>Header Files\Trees\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ValidPathCondition.h">
+      <Filter>Header Files\Trees\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

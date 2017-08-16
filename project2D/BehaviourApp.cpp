@@ -3,6 +3,7 @@
 #include "Font.h"
 #include "Input.h"
 
+
 BehaviourApp::BehaviourApp()
 {
 
@@ -50,15 +51,18 @@ bool BehaviourApp::startup()
 
 	//Flock
 	flockSize = 10;
+	float flockDist = 100;
 	m_flock = new Agent[flockSize];
-	for (int i = 0; i < flockSize; i++)
+	for (int i = 0; i < flockSize-1; i++)
 	{
 		m_flock[i] = Agent(MathDLL::Vector2(rand() % 1280, rand() % 720));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new SeparationForce()));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new CohesionForce()));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new AlignmentForce()));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new SeparationForce(m_flock, flockSize, flockDist)));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new CohesionForce(m_flock, flockSize, flockDist)));
+		m_flock[i].AddBehaviour(new SteeringBehaviour(new AlignmentForce(m_flock, flockSize, flockDist)));
+		
 			
 	}
+	m_flock[9] = m_ai;
 
 
 
@@ -78,7 +82,7 @@ void BehaviourApp::update(float deltaTime)
 	aie::Input* input = aie::Input::getInstance();
 
 	m_agent.Update(deltaTime);
-	m_ai.Update(deltaTime);
+//	m_ai.Update(deltaTime);
 
 	for (int i = 0; i < flockSize; i++)
 	{
@@ -108,7 +112,7 @@ void BehaviourApp::draw()
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 
 	m_agent.Draw(m_2dRenderer);
-	m_ai.Draw(m_2dRenderer);
+//	m_ai.Draw(m_2dRenderer);
 	for (int i = 0; i < flockSize; i++)
 	{
 		m_flock[i].Draw(m_2dRenderer);
