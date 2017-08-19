@@ -123,9 +123,6 @@
     <ClCompile Include="ProjectApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FollowPath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SpawnAction.cpp">
       <Filter>Source Files\Trees\Actions</Filter>
     </ClCompile>
@@ -137,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="SetPathCondition.cpp">
       <Filter>Source Files\Trees\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowPath.cpp">
+      <Filter>Source Files\Trees\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceStillForce.cpp">
+      <Filter>Source Files\SteeringStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="SetCurrentNode.h">
       <Filter>Header Files\Trees\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceStillForce.h">
+      <Filter>Header Files\SteeringStuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

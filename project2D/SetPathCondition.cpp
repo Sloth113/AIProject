@@ -1,19 +1,23 @@
 #include "SetPathCondition.h"
 #include "Agent.h"
+//Makes the path and sets it on another behaviour
 SetPathCondition::SetPathCondition(Graph<PathNode> * map, FollowPath * pathBehav)
 {
 	m_map = map;
 	m_target = nullptr;
+	m_followPathBehav = pathBehav;
 }
 
 SetPathCondition::SetPathCondition(Graph<PathNode> * map, Agent * agent, FollowPath * pathBehav)
 {
 	m_map = map;
 	m_target = agent;
+	m_followPathBehav = pathBehav;
 }
 
 BehaviourResult SetPathCondition::Update(Agent * agent, float deltaTime)
 {
+	std::cout << "SET PATH \n";
 	auto eh = [](Vertex<PathNode> * current, Vertex<PathNode> * end) -> float
 	{
 
@@ -29,7 +33,7 @@ BehaviourResult SetPathCondition::Update(Agent * agent, float deltaTime)
 			i++;
 		}
 		
-		m_followPathBehav->setPath(m_map->aStar(agent->GetNode(), (*i), eh));
+		m_followPathBehav->setPath(m_map->aStar(  (*i), agent->GetNode(), eh));
 		//Random node
 	}
 	else

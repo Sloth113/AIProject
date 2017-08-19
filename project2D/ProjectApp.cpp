@@ -30,7 +30,7 @@ bool ProjectApp::startup()
 	m_mainAgent = Agent(MathDLL::Vector2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_spawnerAgent = Agent(MathDLL::Vector2(100, 100));
 	m_mainAgent.AddBehaviour(new MouseController());
-	//m_mainAgent.AddBehaviour(new SetCurrentNode(&m_map));
+	m_mainAgent.AddBehaviour(new SetCurrentNode(&m_map));
 	//m_agent.AddBehaviour(new KeyboardController());
 	//m_agent.AddBehaviour(new MouseController());
 	//m_agent.AddBehaviour(new DrunkModifier());
@@ -45,16 +45,16 @@ bool ProjectApp::startup()
 	//Spawner
 	
 	Sequence * updatePathOrMove = new Sequence();
-	SeekForce * seekPathForce = new SeekForce(1.0f);
-	FollowPath * followPath = new FollowPath(seekPathForce);
+	ArrivalForce * followPathForce = new ArrivalForce(1.0f);
+	FollowPath * followPath = new FollowPath(followPathForce, 10);
 	updatePathOrMove->children.push_back(followPath);
-	updatePathOrMove->children.push_back(new SteeringBehaviour(seekPathForce));
+	updatePathOrMove->children.push_back(new SteeringBehaviour(followPathForce));
 
 
 	Sequence * closeSetMove = new Sequence();
 	closeSetMove->children.push_back(new CloseToCondition(100, &m_mainAgent));
-	//closeSetMove->children.push_back(new SetPathCondition(&m_map, followPath));
-	closeSetMove->children.push_back(new SteeringBehaviour(new SeekForce(&m_mainAgent)));
+	closeSetMove->children.push_back(new SetPathCondition(&m_map, followPath));
+	//closeSetMove->children.push_back(new SteeringBehaviour(new SeekForce(&m_mainAgent)));
 	Selector * movePathOrCheckClose = new Selector();
 	movePathOrCheckClose->children.push_back(updatePathOrMove);
 	movePathOrCheckClose->children.push_back(closeSetMove);
@@ -65,10 +65,14 @@ bool ProjectApp::startup()
 	spawnOnTimer->children.push_back(new SpawnTimerCondition(3.0f));
 	spawnOnTimer->children.push_back(m_spawnAction);
 
+	Selector * standStillAndSpawn = new Selector();
+	standStillAndSpawn->children.push_back(spawnOnTimer);
+	standStillAndSpawn->children.push_back(new SteeringBehaviour(new ForceStillForce(1.0f)));
+
 	Selector * moveOrSpawn = new Selector();
-	//moveOrSpawn->children.push_back(movePathOrCheckClose);
-	moveOrSpawn->children.push_back(closeSetMove);
-	moveOrSpawn->children.push_back(spawnOnTimer);
+	moveOrSpawn->children.push_back(movePathOrCheckClose);
+	//moveOrSpawn->children.push_back(closeSetMove);
+	moveOrSpawn->children.push_back(standStillAndSpawn);
 
 	
 	m_spawnerAgent.AddBehaviour(moveOrSpawn);

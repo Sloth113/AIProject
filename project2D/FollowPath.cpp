@@ -1,8 +1,10 @@
 #include "FollowPath.h"
 #include "Agent.h"
-FollowPath::FollowPath(SeekForce * force)
+//Check that its not at the node and follow path until empty
+FollowPath::FollowPath(ArrivalForce * force, float dis)
 {
 	m_force = force;
+	m_closeDist = dis;
 }
 BehaviourResult FollowPath::Update(Agent * agent, float deltaTime)
 {
@@ -25,8 +27,10 @@ BehaviourResult FollowPath::Update(Agent * agent, float deltaTime)
 
 void FollowPath::setPath(std::list<Vertex<PathNode>*> path)
 {
-	//path.clear();
+	m_path.clear();
 	m_path = path;
+	m_goToNode = m_path.back();
+	m_force->m_target = m_goToNode->data.pos;
 }
 
 PathNode FollowPath::currentNode()

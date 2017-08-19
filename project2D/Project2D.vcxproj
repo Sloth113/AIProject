@@ -104,6 +104,7 @@
     <ClCompile Include="FiniteStateMachTutorial.cpp" />
     <ClCompile Include="FleeForce.cpp" />
     <ClCompile Include="FollowPath.cpp" />
+    <ClCompile Include="ForceStillForce.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseController.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Avoidance.h" />
     <ClInclude Include="BehaviourApp.h" />
     <ClInclude Include="BlackBoard.h" />
+    <ClInclude Include="ForceStillForce.h" />
     <ClInclude Include="SetCurrentNode.h" />
     <ClInclude Include="SetPathCondition.h" />
     <ClInclude Include="CohesionForce.h" />

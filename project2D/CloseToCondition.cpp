@@ -8,6 +8,7 @@ CloseToCondition::CloseToCondition(float range, Agent * agent)
 
 BehaviourResult CloseToCondition::Update(Agent * pAgent, float deltaTime)
 {
+	std::cout << "Close CHECK\n";
 	MathDLL::Vector2 dis = m_avoiding->GetPos() - pAgent->GetPos();
 	if (dis.getMagSquare() < m_range * m_range)
 	{

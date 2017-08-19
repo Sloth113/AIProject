@@ -13,6 +13,8 @@
 #include "ArrivalForce.h"
 #include "WanderForce.h"
 #include "FleeForce.h"
+#include "ForceStillForce.h"
+
 #include "CloseToCondition.h"
 #include "Sequence.h"
 #include "Selector.h"
