@@ -10,5 +10,5 @@ private:
 	Agent * m_neighbourhood;
 	int m_hoodSize;
 	float m_hoodDist;
-	float m_weight;
+	//float m_weight;
 };

@@ -7,8 +7,9 @@ const float CIRCLE_DIST = 50;
 const float CIRCLE_RAD = 85;
 const float ANGLE_CHANGE = 7.0f / 180.0f * M_PI;
 
-WanderForce::WanderForce()
+WanderForce::WanderForce(float weight)
 {
+	m_weight = weight;
 	m_agent = nullptr;
 }
 
@@ -22,6 +23,7 @@ MathDLL::Vector2 WanderForce::getForce(Agent * agent)
 	m_target = m_prevTarget;
 	*/
 
+	//Set the seek target
 	m_cirCenter = agent->GetVel();
 	float length = m_wandPos.magnitude();
 

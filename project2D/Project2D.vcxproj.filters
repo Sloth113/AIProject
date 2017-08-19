@@ -55,6 +55,9 @@
     <Filter Include="Source Files\SteeringStuff\Flocking">
       <UniqueIdentifier>{cf5dcee0-ae41-4fb9-9c08-4adf43b8161b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Trees\Actions">
+      <UniqueIdentifier>{4f62bd7c-3934-40ef-8e82-eafd6318ab84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -120,8 +123,20 @@
     <ClCompile Include="ProjectApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FollowPathCondition.cpp">
+    <ClCompile Include="FollowPath.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnAction.cpp">
+      <Filter>Source Files\Trees\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnTimerCondition.cpp">
+      <Filter>Source Files\Trees\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="SetCurrentNode.cpp">
+      <Filter>Source Files\Trees\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="SetPathCondition.cpp">
+      <Filter>Source Files\Trees\Actions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +233,17 @@
     <ClInclude Include="FollowPath.h">
       <Filter>Header Files\Trees\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="ValidPathCondition.h">
+    <ClInclude Include="SpawnAction.h">
+      <Filter>Header Files\Trees\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnTimerCondition.h">
       <Filter>Header Files\Trees\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="SetPathCondition.h">
+      <Filter>Header Files\Trees\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="SetCurrentNode.h">
+      <Filter>Header Files\Trees\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

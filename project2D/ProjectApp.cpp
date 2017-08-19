@@ -29,14 +29,53 @@ bool ProjectApp::startup()
 
 	m_mainAgent = Agent(MathDLL::Vector2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_spawnerAgent = Agent(MathDLL::Vector2(100, 100));
+	m_mainAgent.AddBehaviour(new MouseController());
+	//m_mainAgent.AddBehaviour(new SetCurrentNode(&m_map));
 	//m_agent.AddBehaviour(new KeyboardController());
 	//m_agent.AddBehaviour(new MouseController());
 	//m_agent.AddBehaviour(new DrunkModifier());
 	//m_agent.AddBehaviour(new SteeringBehaviour(new WanderForce()));
 
 
+	//Spawn
+	spawnPrototype = Agent(MathDLL::Vector2(0, 0));
+	spawnPrototype.AddBehaviour(new SteeringBehaviour(new WanderForce(0.5f)));
+	spawnPrototype.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_mainAgent)));
+	spawnPrototype.AddBehaviour(new SetCurrentNode(&m_map));
+	//Spawner
+	
+	Sequence * updatePathOrMove = new Sequence();
+	SeekForce * seekPathForce = new SeekForce(1.0f);
+	FollowPath * followPath = new FollowPath(seekPathForce);
+	updatePathOrMove->children.push_back(followPath);
+	updatePathOrMove->children.push_back(new SteeringBehaviour(seekPathForce));
 
 
+	Sequence * closeSetMove = new Sequence();
+	closeSetMove->children.push_back(new CloseToCondition(100, &m_mainAgent));
+	//closeSetMove->children.push_back(new SetPathCondition(&m_map, followPath));
+	closeSetMove->children.push_back(new SteeringBehaviour(new SeekForce(&m_mainAgent)));
+	Selector * movePathOrCheckClose = new Selector();
+	movePathOrCheckClose->children.push_back(updatePathOrMove);
+	movePathOrCheckClose->children.push_back(closeSetMove);
+
+
+	Sequence * spawnOnTimer = new Sequence();
+	m_spawnAction = new SpawnAction(&spawnPrototype);
+	spawnOnTimer->children.push_back(new SpawnTimerCondition(3.0f));
+	spawnOnTimer->children.push_back(m_spawnAction);
+
+	Selector * moveOrSpawn = new Selector();
+	//moveOrSpawn->children.push_back(movePathOrCheckClose);
+	moveOrSpawn->children.push_back(closeSetMove);
+	moveOrSpawn->children.push_back(spawnOnTimer);
+
+	
+	m_spawnerAgent.AddBehaviour(moveOrSpawn);
+	m_spawnerAgent.AddBehaviour(new SetCurrentNode(&m_map));
+
+
+	
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 	m_2dRenderer = new aie::Renderer2D();
 
@@ -50,7 +89,7 @@ bool ProjectApp::startup()
 			if(ran > 7)
 				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::clear, 1}});
 			if (ran <= 7 && ran >= 3)
-				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::rough, 25} });
+				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::rough, 50} });
 			if (ran < 3)
 				arr[i][j] = m_map.createVertex(PathNode{ MathDLL::Vector2((i)*GRID_SPACE + GRID_SPACE/2 +5,(j)*GRID_SPACE + GRID_SPACE/2 +5),{PathNode::Type::solid, 100} });
 
@@ -119,6 +158,7 @@ bool ProjectApp::startup()
 	m_flock[9] = m_ai;
 
 	*/
+	spawnPrototype.SetNode(m_map.m_verts.front());
 	return true;
 }
 
@@ -132,15 +172,28 @@ void ProjectApp::update(float deltaTime)
 	aie::Input* input = aie::Input::getInstance();
 
 	m_mainAgent.Update(deltaTime);
-	//	m_ai.Update(deltaTime);
 
-	for (int i = 0; i < m_currentSwamSize; i++)
+	m_spawnerAgent.Update(deltaTime);
+
+	//spawned dudes
+	for (auto i = m_swarm.begin(); i != m_swarm.end(); i++)
 	{
-		m_spawn[i].Update(deltaTime);
+		(*i)->Update(deltaTime);
+	}
+	//SOMEHOW BROKE WONT CREATE MORE THAN ONE 
+	if (m_spawnAction->SpawnReady())
+	{
+		Agent * clone = m_spawnAction->GetSpawn();
+		clone->SetPos(MathDLL::Vector2(m_spawnerAgent.GetPos().x, m_spawnerAgent.GetPos().y));
+		clone->SetNode(m_spawnerAgent.GetNode());
+		m_swarm.push_back(clone);
 	}
 
+	//path tests
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
+		m_swarm.clear();
+		/*
 		//Remembers old path, could just clear or do fancy stuff
 		if (m_path.size() > 0)
 		{
@@ -148,10 +201,14 @@ void ProjectApp::update(float deltaTime)
 		}
 		//AStarOne(m_map, m_map.m_verts.front(), m_map.m_verts.back());
 		//m_path = MakePath(m_map.m_verts.front(), m_map.m_verts.back());
-		auto eh = []()
+		auto eh = [](Vertex<PathNode> * current, Vertex<PathNode> * end) -> float
 		{
+			
+			MathDLL::Vector2 dis = end->data.pos - current->data.pos;
+			return (dis.magnitude() / GRID_SPACE);
 		};
-		m_path = AStar(m_map, m_map.m_verts.front(), m_map.m_verts.back(), eh);
+		m_path = m_map.aStar(m_map.m_verts.front(), m_map.m_verts.back(), eh);
+		*/
 	}
 
 	// exit the application
@@ -219,10 +276,12 @@ void ProjectApp::draw()
 
 
 	m_mainAgent.Draw(m_2dRenderer);
+
+	m_spawnerAgent.Draw(m_2dRenderer);
 	//	m_ai.Draw(m_2dRenderer);
-	for (int i = 0; i < m_currentSwamSize; i++)
+	for (auto i = m_swarm.begin(); i != m_swarm.end(); i++)
 	{
-		m_spawn[i].Draw(m_2dRenderer);
+		(*i)->Draw(m_2dRenderer);
 	}
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -271,167 +330,167 @@ void ProjectApp::DijkstraThing(Graph<PathNode> & graph)
 
 }
 
-void ProjectApp::AStarOne(Graph<PathNode> & graph, Vertex<PathNode> * start, Vertex<PathNode> * end)
-{
-	//
-	int count = 0;
-	int edges = 0;
-	//Set defaults
-	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
-	{
-		(*i)->gScore = 9999999999; (*i)->hScore = 9999999999; (*i)->fScore = 9999999999; (*i)->parent = nullptr; (*i)->traversed = false;
-	}
+//void ProjectApp::AStarOne(Graph<PathNode> & graph, Vertex<PathNode> * start, Vertex<PathNode> * end)
+//{
+//	//
+//	int count = 0;
+//	int edges = 0;
+//	//Set defaults
+//	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
+//	{
+//		(*i)->gScore = 9999999999; (*i)->hScore = 9999999999; (*i)->fScore = 9999999999; (*i)->parent = nullptr; (*i)->traversed = false;
+//	}
+//
+//	auto cmp = [](Vertex<PathNode> * left, Vertex<PathNode> * right)
+//	{
+//		return left->fScore < right->fScore;
+//	};
+//	//std::priority_queue<Vertex<PathNode> *, std::vector<Vertex<PathNode>*>, decltype(cmp)> pQueue(cmp);
+//	std::list<Vertex<PathNode>*> openList;
+//	std::list<Vertex<PathNode>*> closedList;
+//	
+//	//H
+//	MathDLL::Vector2 h = end->data.pos - start->data.pos;
+//	start->hScore = h.magnitude()/25.0f;
+//	//defaults
+//	start->gScore = 0;
+//	start->fScore = start->hScore;
+//	start->parent = start;
+//
+//	openList.push_back(start);
+//
+//
+//	while (!openList.empty())
+//	{
+//		openList.sort(cmp);
+//		//std::cout << "BREAK1" << std::endl;
+//		Vertex<PathNode> * node = openList.front();
+//		openList.pop_front();
+//		node->traversed = true;
+//		closedList.push_back(node);
+//		//std::cout << "BREAK2" << std::endl;
+//		if (node == end)
+//		{
+//			break;
+//			//Make path
+//		}
+//
+//		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
+//		{
+//			edges++;
+//			if (!(*i)->target->traversed)
+//			{
+//				//H
+//				MathDLL::Vector2 dis = end->data.pos - (*i)->target->data.pos;
+//				float nextHScore = (dis.magnitude()/25.0f);
+//				std::cout << "H:" << nextHScore << std::endl;
+//				float nextGScore = node->gScore + (*i)->weight;
+//				float newScore = node->gScore + (*i)->weight + nextHScore;
+//				std::cout << "H:" << nextHScore << "G:" << nextGScore << "F:" << newScore << std::endl;
+//				//std::cout << "BREAK3" << std::endl;
+//
+//				if (newScore < (*i)->target->fScore)
+//				{
+//					//std::cout << "BREAK4" << std::endl;
+//					(*i)->target->parent = node;
+//					(*i)->target->fScore = newScore;
+//					(*i)->target->gScore = nextGScore;
+//					(*i)->target->hScore = nextHScore;
+//				}
+//				//std::cout << "BREAK5" << std::endl;
+//				//ADD TO LIST IF NOT ALREADY THERE
+//				if (!(std::find(closedList.begin(), closedList.end(), (*i)->target) != closedList.end()) && !((std::find(openList.begin(), openList.end(), (*i)->target)) != openList.end()) )
+//				{
+//					//std::cout << "BREAK6" << std::endl;
+//					openList.push_back((*i)->target);
+//				}
+//				//std::cout << "BREAK7" << std::endl;
+//			}
+//		}
+//		std::cout << ":END:" << std::endl;
+//	}
+//}
 
-	auto cmp = [](Vertex<PathNode> * left, Vertex<PathNode> * right)
-	{
-		return left->fScore < right->fScore;
-	};
-	//std::priority_queue<Vertex<PathNode> *, std::vector<Vertex<PathNode>*>, decltype(cmp)> pQueue(cmp);
-	std::list<Vertex<PathNode>*> openList;
-	std::list<Vertex<PathNode>*> closedList;
-	
-	//H
-	MathDLL::Vector2 h = end->data.pos - start->data.pos;
-	start->hScore = h.magnitude()/25.0f;
-	//defaults
-	start->gScore = 0;
-	start->fScore = start->hScore;
-	start->parent = start;
-
-	openList.push_back(start);
-
-
-	while (!openList.empty())
-	{
-		openList.sort(cmp);
-		//std::cout << "BREAK1" << std::endl;
-		Vertex<PathNode> * node = openList.front();
-		openList.pop_front();
-		node->traversed = true;
-		closedList.push_back(node);
-		//std::cout << "BREAK2" << std::endl;
-		if (node == end)
-		{
-			break;
-			//Make path
-		}
-
-		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
-		{
-			edges++;
-			if (!(*i)->target->traversed)
-			{
-				//H
-				MathDLL::Vector2 dis = end->data.pos - (*i)->target->data.pos;
-				float nextHScore = (dis.magnitude()/25.0f);
-				std::cout << "H:" << nextHScore << std::endl;
-				float nextGScore = node->gScore + (*i)->weight;
-				float newScore = node->gScore + (*i)->weight + nextHScore;
-				std::cout << "H:" << nextHScore << "G:" << nextGScore << "F:" << newScore << std::endl;
-				//std::cout << "BREAK3" << std::endl;
-
-				if (newScore < (*i)->target->fScore)
-				{
-					//std::cout << "BREAK4" << std::endl;
-					(*i)->target->parent = node;
-					(*i)->target->fScore = newScore;
-					(*i)->target->gScore = nextGScore;
-					(*i)->target->hScore = nextHScore;
-				}
-				//std::cout << "BREAK5" << std::endl;
-				//ADD TO LIST IF NOT ALREADY THERE
-				if (!(std::find(closedList.begin(), closedList.end(), (*i)->target) != closedList.end()) && !((std::find(openList.begin(), openList.end(), (*i)->target)) != openList.end()) )
-				{
-					//std::cout << "BREAK6" << std::endl;
-					openList.push_back((*i)->target);
-				}
-				//std::cout << "BREAK7" << std::endl;
-			}
-		}
-		std::cout << ":END:" << std::endl;
-	}
-}
-
-std::list<Vertex<PathNode>*> ProjectApp::AStar(Graph<PathNode>& graph, Vertex<PathNode>* start, Vertex<PathNode>* end, std::function<void()> heuristic)
-{
-	//Lamba and list
-	auto cmp = [](Vertex<PathNode> * left, Vertex<PathNode> * right)
-	{
-		return left->fScore < right->fScore;
-	};
-	//std::priority_queue<Vertex<PathNode> *, std::vector<Vertex<PathNode>*>, decltype(cmp)> pQueue(cmp);
-	std::list<Vertex<PathNode>*> pQueue;
-	
-	//Set defaults
-	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
-	{
-		(*i)->gScore = FLT_MAX; (*i)->hScore = FLT_MAX; (*i)->fScore = FLT_MAX; (*i)->parent = nullptr; (*i)->traversed = false;
-	}
-	//Initial
-	start->parent = start;
-	start->gScore = 0;
-	/*
-	//Heuristic
-	MathDLL::Vector2 h = end->data.pos - start->data.pos;
-	start->hScore = h.magnitude() / 25.0f;
-	start->fScore = start->hScore + start->gScore;
-	*/
-	pQueue.push_front(start);
-	//Find path
-	while (!pQueue.empty())
-	{
-		pQueue.sort(cmp);
-		Vertex<PathNode> * node = pQueue.front();
-		pQueue.pop_front();
-		node->traversed = true;
-		
-		if (node == end)
-		{
-			return MakePath(start, end);
-		}
-		//edges
-		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
-		{
-			if (!(*i)->target->traversed)
-			{
-				node->gScore = node->parent->gScore + (*i)->weight;
-				MathDLL::Vector2 dis = end->data.pos - (*i)->target->data.pos;
-				float nextHScore = (dis.magnitude() / GRID_SPACE);
-				float newFScore = node->gScore + nextHScore;
-				//
-				std::cout << newFScore << " < " << (*i)->target->fScore << std::endl;
-				if (newFScore < (*i)->target->fScore)
-				{
-					
-					(*i)->target->parent = node;
-					(*i)->target->gScore = (node->gScore + (*i)->weight);
-					(*i)->target->hScore = (end->data.pos - (*i)->target->data.pos).magnitude();
-					//(*i)->target->fScore = newFScore;
-					(*i)->target->fScore = (*i)->target->gScore + (*i)->target->hScore;
-					//Not already in there
-					if (std::find(pQueue.begin(), pQueue.end(), (*i)->target) == pQueue.end() && !(*i)->target->traversed)
-					{
-						pQueue.push_front((*i)->target);
-					}
-				}
-			}
-		}
-	}
-	return MakePath(start, end);
-}
-
-
-
-std::list<Vertex<PathNode> *> ProjectApp::MakePath(Vertex<PathNode> * start, Vertex<PathNode> * end)
-{
-	std::list<Vertex<PathNode> *> path;
-	//path from selected to origin
-	while (end != end->parent && end->parent != nullptr)
-	{
-		path.push_back(end);
-		end = end->parent;
-	}
-	path.push_back(end);
-	path.reverse();
-	return path;
-}
+//std::list<Vertex<PathNode>*> ProjectApp::AStar(Graph<PathNode>& graph, Vertex<PathNode>* start, Vertex<PathNode>* end, std::function<void()> heuristic)
+//{
+//	//Lamba and list
+//	auto cmp = [](Vertex<PathNode> * left, Vertex<PathNode> * right)
+//	{
+//		return left->fScore < right->fScore;
+//	};
+//	//std::priority_queue<Vertex<PathNode> *, std::vector<Vertex<PathNode>*>, decltype(cmp)> pQueue(cmp);
+//	std::list<Vertex<PathNode>*> pQueue;
+//	
+//	//Set defaults
+//	for (auto i = graph.m_verts.begin(); i != graph.m_verts.end(); i++)
+//	{
+//		(*i)->gScore = FLT_MAX; (*i)->hScore = FLT_MAX; (*i)->fScore = FLT_MAX; (*i)->parent = nullptr; (*i)->traversed = false;
+//	}
+//	//Initial
+//	start->parent = start;
+//	start->gScore = 0;
+//	/*
+//	//Heuristic
+//	MathDLL::Vector2 h = end->data.pos - start->data.pos;
+//	start->hScore = h.magnitude() / 25.0f;
+//	start->fScore = start->hScore + start->gScore;
+//	*/
+//	pQueue.push_front(start);
+//	//Find path
+//	while (!pQueue.empty())
+//	{
+//		pQueue.sort(cmp);
+//		Vertex<PathNode> * node = pQueue.front();
+//		pQueue.pop_front();
+//		node->traversed = true;
+//		
+//		if (node == end)
+//		{
+//			return MakePath(start, end);
+//		}
+//		//edges
+//		for (auto i = node->edges.begin(); i != node->edges.end(); i++)
+//		{
+//			if (!(*i)->target->traversed)
+//			{
+//				node->gScore = node->parent->gScore + (*i)->weight;
+//				MathDLL::Vector2 dis = end->data.pos - (*i)->target->data.pos;
+//				float nextHScore = (dis.magnitude() / GRID_SPACE);
+//				float newFScore = node->gScore + nextHScore;
+//				//
+//				std::cout << newFScore << " < " << (*i)->target->fScore << std::endl;
+//				if (newFScore < (*i)->target->fScore)
+//				{
+//					
+//					(*i)->target->parent = node;
+//					(*i)->target->gScore = (node->gScore + (*i)->weight);
+//					(*i)->target->hScore = (end->data.pos - (*i)->target->data.pos).magnitude();
+//					//(*i)->target->fScore = newFScore;
+//					(*i)->target->fScore = (*i)->target->gScore + (*i)->target->hScore;
+//					//Not already in there
+//					if (std::find(pQueue.begin(), pQueue.end(), (*i)->target) == pQueue.end() && !(*i)->target->traversed)
+//					{
+//						pQueue.push_front((*i)->target);
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return MakePath(start, end);
+//}
+//
+//
+//
+//std::list<Vertex<PathNode> *> ProjectApp::MakePath(Vertex<PathNode> * start, Vertex<PathNode> * end)
+//{
+//	std::list<Vertex<PathNode> *> path;
+//	//path from selected to origin
+//	while (end != end->parent && end->parent != nullptr)
+//	{
+//		path.push_back(end);
+//		end = end->parent;
+//	}
+//	path.push_back(end);
+//	path.reverse();
+//	return path;
+//}

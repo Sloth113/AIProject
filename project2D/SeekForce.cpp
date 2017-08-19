@@ -3,12 +3,20 @@
 
 SeekForce::SeekForce()
 {
+	m_weight = 1;
+	m_target = MathDLL::Vector2();
+	m_agent = nullptr;
+}
+SeekForce::SeekForce(float weight)
+{
+	m_weight = weight;
 	m_target = MathDLL::Vector2();
 	m_agent = nullptr;
 }
 
 SeekForce::SeekForce(Agent * target)
 {
+	m_weight = 1;
 	m_agent = target;
 }
 
@@ -28,6 +36,5 @@ MathDLL::Vector2 SeekForce::getForce(Agent * agent)
 		vel.normalise();
 	vel = vel * agent->GetSpeed(); //
 	MathDLL::Vector2 force = vel - agent->GetVel();
-	
-	return force;
+	return force * m_weight;
 }

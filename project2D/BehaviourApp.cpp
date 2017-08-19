@@ -38,7 +38,7 @@ bool BehaviourApp::startup()
 
 	Selector * wanderFlee = new Selector();
 	wanderFlee->children.push_back(closeFlee);
-	wanderFlee->children.push_back(new SteeringBehaviour(new WanderForce()));
+	wanderFlee->children.push_back(new SteeringBehaviour(new WanderForce(1.0f)));
 
 	m_ai.AddBehaviour(wanderFlee);
 	

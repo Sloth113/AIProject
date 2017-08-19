@@ -3,7 +3,7 @@
 class WanderForce :public SeekForce
 {
 public:
-	WanderForce();
+	WanderForce(float weight);
 	virtual MathDLL::Vector2 getForce(Agent * agent);
 private:
 	MathDLL::Vector2 m_prevTarget;
