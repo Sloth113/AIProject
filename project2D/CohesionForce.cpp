@@ -17,10 +17,10 @@ MathDLL::Vector2 CohesionForce::getForce(Agent * agent)
 
 	for (int i = 0; i < m_hoodSize; i++)
 	{
-		cohesionForce += m_neighbourhood[i].GetPos() - agent->GetPos();
+		cohesionForce += m_neighbourhood[i].getPos() - agent->getPos();
 	}
 
 	cohesionForce /= m_hoodSize;
 
-	return (cohesionForce - agent->GetVel()) * m_weight;
+	return (cohesionForce - agent->getVel()) * m_weight;
 }

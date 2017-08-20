@@ -14,7 +14,7 @@ BehaviourResult SpawnAction::Update(Agent *pAgent, float deltaTime)
 Agent * SpawnAction::GetSpawn()
 {
 	m_spawnThing = false;
-	return m_spawn->Clone();
+	return m_spawn->clone();
 }
 
 bool SpawnAction::SpawnReady()

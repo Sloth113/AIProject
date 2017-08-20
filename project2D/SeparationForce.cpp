@@ -15,10 +15,10 @@ MathDLL::Vector2 SeparationForce::getForce(Agent * agent)
 
 	for (int i = 0; i < m_hoodSize; i++)
 	{
-		separtionForce += agent->GetPos() - m_neighbourhood[i].GetPos();
+		separtionForce += agent->getPos() - m_neighbourhood[i].getPos();
 	}
 
 	separtionForce /= m_hoodSize;
 
-	return (separtionForce - agent->GetVel()) * m_weight;
+	return (separtionForce - agent->getVel()) * m_weight;
 }

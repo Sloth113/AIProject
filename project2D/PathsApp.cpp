@@ -70,7 +70,7 @@ bool PathsApp::startup()
 	 startSel = map.m_verts.front();
 	
 	 //m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
-	 m_ai.AddBehaviour(new SteeringBehaviour(new ArrivalForce(&m_agent)));
+	 m_ai.addBehaviour(new SteeringBehaviour(new ArrivalForce(&m_agent)));
 	//m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(MathDLL::Vector2((*(map.m_verts.begin()))->data.x, (*(map.m_verts.begin()))->data.y))));
 
 	selected = nullptr;
@@ -88,8 +88,8 @@ void PathsApp::update(float deltaTime)
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	m_agent.Update(deltaTime);
-	m_ai.Update(deltaTime);
+	m_agent.update(deltaTime);
+	m_ai.update(deltaTime);
 	
 	//Map creation
 	bool nodePress = false;
@@ -157,7 +157,7 @@ void PathsApp::update(float deltaTime)
 		}
 		m_path.push_back(selected);
 		m_path.reverse();
-		m_agent.SetPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
+		m_agent.setPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
 		selected = false;
 		addEdge = false;
 		std::cout << "Nodes:" << m_path.size() << std::endl;
@@ -165,7 +165,7 @@ void PathsApp::update(float deltaTime)
 
 	if (m_path.size() > 0)
 	{
-		MathDLL::Vector2 pos1 = m_ai.GetPos();
+		MathDLL::Vector2 pos1 = m_ai.getPos();
 		MathDLL::Vector2 pos2 = MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y);
 		MathDLL::Vector2 dis = pos1 - pos2;
 		if (dis.magnitude() < 15)
@@ -174,7 +174,7 @@ void PathsApp::update(float deltaTime)
 			startSel = m_path.front();
 			m_path.pop_front();
 			if (m_path.size() > 0)
-				m_agent.SetPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
+				m_agent.setPos(MathDLL::Vector2(m_path.front()->data.x, m_path.front()->data.y));
 		}
 	}
 
@@ -255,11 +255,11 @@ void PathsApp::draw()
 	}
 
 	char fps[32];
-	sprintf_s(fps, 32, "SPEED: %F", m_ai.GetVel().magnitude());
+	sprintf_s(fps, 32, "SPEED: %F", m_ai.getVel().magnitude());
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 	
-	m_agent.Draw(m_2dRenderer);
-	m_ai.Draw(m_2dRenderer);
+	m_agent.draw(m_2dRenderer);
+	m_ai.draw(m_2dRenderer);
 
 	// done drawing sprites
 	m_2dRenderer->end();

@@ -6,6 +6,6 @@ SteeringBehaviour::SteeringBehaviour(SteeringForce * force)
 }
 BehaviourResult SteeringBehaviour::Update(Agent * pAgent, float deltaTime)
 {
-	pAgent->AddForce(steerForce->getForce(pAgent));
+	pAgent->addForce(steerForce->getForce(pAgent));
 	return BehaviourResult::Success;
 }

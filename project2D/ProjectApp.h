@@ -3,6 +3,7 @@
 #include "Renderer2D.h"
 #include "Audio.h"
 #include "MathLibDLL.h"
+//Forces 
 #include "Agent.h"
 #include "KeyboardController.h"
 #include "DrunkModifier.h"
@@ -15,9 +16,6 @@
 #include "FleeForce.h"
 #include "ForceStillForce.h"
 
-#include "CloseToCondition.h"
-#include "Sequence.h"
-#include "Selector.h"
 //Flocking
 #include "SeparationForce.h"
 #include "CohesionForce.h"
@@ -28,6 +26,10 @@
 #include "FollowPath.h"
 #include "SetCurrentNode.h"
 #include "SetPathCondition.h"
+#include "NotCloseToCondition.h"
+#include "CloseToCondition.h"
+#include "Sequence.h"
+#include "Selector.h"
 
 
 
@@ -85,6 +87,7 @@ protected:
 //	std::list<Vertex<PathNode>*>  MakePath(Vertex<PathNode> * start, Vertex<PathNode> * end);
 	//For map building
 	Vertex<PathNode> * arr[GRID_X][GRID_Y];
+	
 
 	//Used path
 	std::list<Vertex<PathNode>* > m_path;

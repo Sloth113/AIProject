@@ -9,6 +9,6 @@ ForceStillForce::ForceStillForce(float weight)
 }
 MathDLL::Vector2 ForceStillForce::getForce(Agent * agent)
 {
-	MathDLL::Vector2 force = agent->GetVel() * -1;
+	MathDLL::Vector2 force = agent->getVel() * -1;
 	return force * m_weight;
 }

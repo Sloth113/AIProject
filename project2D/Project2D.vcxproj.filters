@@ -141,6 +141,9 @@
     <ClCompile Include="ForceStillForce.cpp">
       <Filter>Source Files\SteeringStuff</Filter>
     </ClCompile>
+    <ClCompile Include="NotCloseToCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="ForceStillForce.h">
       <Filter>Header Files\SteeringStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="NotCloseToCondition.h">
+      <Filter>Header Files\Trees\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -17,7 +17,6 @@ SetPathCondition::SetPathCondition(Graph<PathNode> * map, Agent * agent, FollowP
 
 BehaviourResult SetPathCondition::Update(Agent * agent, float deltaTime)
 {
-	std::cout << "SET PATH \n";
 	auto eh = [](Vertex<PathNode> * current, Vertex<PathNode> * end) -> float
 	{
 
@@ -33,12 +32,12 @@ BehaviourResult SetPathCondition::Update(Agent * agent, float deltaTime)
 			i++;
 		}
 		
-		m_followPathBehav->setPath(m_map->aStar(  (*i), agent->GetNode(), eh));
+		m_followPathBehav->setPath(m_map->aStar(  (*i), agent->getNode(), eh));
 		//Random node
 	}
 	else
 	{
-		m_followPathBehav->setPath(m_map->aStar(agent->GetNode(), m_target->GetNode(), eh));
+		m_followPathBehav->setPath(m_map->aStar( m_target->getNode(), agent->getNode(), eh));
 	}
 	return BehaviourResult();
 }

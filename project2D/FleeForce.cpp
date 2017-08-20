@@ -21,13 +21,13 @@ FleeForce::FleeForce(MathDLL::Vector2 target)
 MathDLL::Vector2 FleeForce::getForce(Agent * agent)
 {
 	if (m_agent != nullptr)
-		m_target = m_agent->GetPos();
+		m_target = m_agent->getPos();
 
-	MathDLL::Vector2 vel =  (agent->GetPos()- (m_target));
+	MathDLL::Vector2 vel =  (agent->getPos()- (m_target));
 	if (vel.getMagSquare() != 0)
 		vel.normalise();
-	vel = vel * agent->GetSpeed(); //
-	MathDLL::Vector2 force = vel - agent->GetVel();
+	vel = vel * agent->getSpeed(); //
+	MathDLL::Vector2 force = vel - agent->getVel();
 
 	return force;
 }

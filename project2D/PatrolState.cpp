@@ -2,7 +2,7 @@
 #include "Agent.h"
 void PatrolState::Update(Agent * agent, FiniteStateMachine * sm)
 {
-	if ((agent->GetPos() - currentPoint.pos).getMagSquare() > 5)
+	if ((agent->getPos() - currentPoint.pos).getMagSquare() > 5)
 	{
 		currentPoint = *(currentPoint.next);
 	}

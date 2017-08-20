@@ -20,21 +20,20 @@ ArrivalForce::ArrivalForce(MathDLL::Vector2 target)
 
 MathDLL::Vector2 ArrivalForce::getForce(Agent * agent)
 {
-	float slowCircRad = 15;
+	float slowCircRad = 10.0f;
 	if (m_agent != nullptr)
-		m_target = m_agent->GetPos();
+		m_target = m_agent->getPos();
 	MathDLL::Vector2 vel;
-	
-	if ((m_target - agent->GetPos()).getMagSquare() > slowCircRad*slowCircRad)
+	if ((m_target - agent->getPos()).getMagSquare() > slowCircRad*slowCircRad)
 	{
-		vel = (m_target - agent->GetPos()).getNormalised() * agent->GetSpeed(); //normal speed (seek)
+		vel = (m_target - agent->getPos()).getNormalised() * agent->getSpeed(); //normal speed (seek)
 	}
 	else
 	{
-		vel = (m_target - agent->GetPos()).getNormalised() * -1 *  ((m_target - agent->GetPos()).magnitude() / slowCircRad); //Slow speed
+		vel += (m_target - agent->getPos()).getNormalised() * -1 *  ((m_target - agent->getPos()).magnitude() / slowCircRad); //Slow speed
 	}
-	MathDLL::Vector2 force = vel - agent->GetVel();
+	MathDLL::Vector2 force = vel - agent->getVel();
 
-	return force;
+	return SeekForce::getForce(agent) + force * m_weight;
 }
 

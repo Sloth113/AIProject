@@ -17,11 +17,11 @@ bool FiniteStateMachTutorial::startup()
 {
 	m_agent = Agent(MathDLL::Vector2(getWindowWidth()/2, getWindowHeight()/2));
 	m_ai = Agent(MathDLL::Vector2(100, 100));
-	m_agent.AddBehaviour(new KeyboardController());
+	m_agent.addBehaviour(new KeyboardController());
 //	m_agent.AddBehaviour(new MouseController());
-	m_agent.AddBehaviour(new DrunkModifier());
+	m_agent.addBehaviour(new DrunkModifier());
 
-	m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
+	m_ai.addBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
 
 	m_2dRenderer = new aie::Renderer2D();
 
@@ -38,8 +38,8 @@ void FiniteStateMachTutorial::update(float deltaTime)
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	m_agent.Update(deltaTime);
-	m_ai.Update(deltaTime);
+	m_agent.update(deltaTime);
+	m_ai.update(deltaTime);
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -58,8 +58,8 @@ void FiniteStateMachTutorial::draw()
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
-	m_agent.Draw(m_2dRenderer);
-	m_ai.Draw(m_2dRenderer);
+	m_agent.draw(m_2dRenderer);
+	m_ai.draw(m_2dRenderer);
 
 	// done drawing sprites
 	m_2dRenderer->end();

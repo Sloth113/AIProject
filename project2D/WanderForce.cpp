@@ -16,6 +16,7 @@ WanderForce::WanderForce(float weight)
 MathDLL::Vector2 WanderForce::getForce(Agent * agent)
 {
 	/*
+	Old random location wander
 	if (m_prevTarget.getMagSquare() == 0 || (m_target - agent->GetPos()).getMagSquare() < 10)
 	{
 		m_prevTarget = MathDLL::Vector2(rand() % 1281,rand() % 721);
@@ -24,7 +25,7 @@ MathDLL::Vector2 WanderForce::getForce(Agent * agent)
 	*/
 
 	//Set the seek target
-	m_cirCenter = agent->GetVel();
+	m_cirCenter = agent->getVel();
 	float length = m_wandPos.magnitude();
 
 	if (length == 0)
@@ -34,7 +35,7 @@ MathDLL::Vector2 WanderForce::getForce(Agent * agent)
 
 	m_cirCenter.normalise();
 	m_cirCenter *= CIRCLE_DIST;
-	m_cirCenter += agent->GetPos();
+	m_cirCenter += agent->getPos();
 
 	//random number between -1 and 1
 	float randNum = (((float)rand() / (float)RAND_MAX) - 0.5f) * 2.0f;
@@ -53,35 +54,5 @@ MathDLL::Vector2 WanderForce::getForce(Agent * agent)
 	m_wandPos = m_displacement + m_cirCenter;
 
 	m_target = m_wandPos;
-	return SeekForce::getForce(agent);
-
-	/*
-	float wanderAngle;
-
-	MathDLL::Vector2 cirCenter = agent->GetVel();
-	if(cirCenter.getMagSquare() != 0)
-		cirCenter.normalise();
-	cirCenter = cirCenter * CIRCLE_DIST;
-
-	MathDLL::Vector2 displacement = MathDLL::Vector2(0, 0); //YAXIS ALIGN
-	displacement = displacement * CIRCLE_RAD;
-
-	//CHANGE ANGLE
-	wanderAngle = rand() % 11 -5 ;
-	displacement.x += wanderAngle;
-
-	wanderAngle = rand() % 11 - 5;
-	displacement.y += wanderAngle;
-
-	if(displacement.getMagSquare() != 0)
-		displacement.normalise();
-	displacement = displacement * CIRCLE_RAD;
-
-	//DIS = dis - r * tan (wanderangle);
-	//Dis.normalise
-	//dis = dis * circRad;
-
-	//MathDLL::Vector2 force;
-	*/
 	return SeekForce::getForce(agent);
 }

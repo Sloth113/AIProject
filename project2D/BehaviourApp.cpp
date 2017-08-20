@@ -19,7 +19,7 @@ bool BehaviourApp::startup()
 	m_agent = Agent(MathDLL::Vector2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_ai = Agent(MathDLL::Vector2(100, 100));
 	//m_agent.AddBehaviour(new KeyboardController());
-	m_agent.AddBehaviour(new MouseController());
+	m_agent.addBehaviour(new MouseController());
 	//m_agent.AddBehaviour(new DrunkModifier());
 	//m_agent.AddBehaviour(new SteeringBehaviour(new WanderForce()));
 
@@ -40,7 +40,7 @@ bool BehaviourApp::startup()
 	wanderFlee->children.push_back(closeFlee);
 	wanderFlee->children.push_back(new SteeringBehaviour(new WanderForce(1.0f)));
 
-	m_ai.AddBehaviour(wanderFlee);
+	m_ai.addBehaviour(wanderFlee);
 	
 	//m_ai.AddBehaviour(new SteeringBehaviour(new SeekForce(&m_agent)));
 	//m_ai.AddBehaviour(new SteeringBehaviour(new FleeForce(&m_agent)));
@@ -56,9 +56,9 @@ bool BehaviourApp::startup()
 	for (int i = 0; i < flockSize-1; i++)
 	{
 		m_flock[i] = Agent(MathDLL::Vector2(rand() % 1280, rand() % 720));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new SeparationForce(m_flock, flockSize, flockDist)));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new CohesionForce(m_flock, flockSize, flockDist)));
-		m_flock[i].AddBehaviour(new SteeringBehaviour(new AlignmentForce(m_flock, flockSize, flockDist)));
+		m_flock[i].addBehaviour(new SteeringBehaviour(new SeparationForce(m_flock, flockSize, flockDist)));
+		m_flock[i].addBehaviour(new SteeringBehaviour(new CohesionForce(m_flock, flockSize, flockDist)));
+		m_flock[i].addBehaviour(new SteeringBehaviour(new AlignmentForce(m_flock, flockSize, flockDist)));
 		
 			
 	}
@@ -81,12 +81,12 @@ void BehaviourApp::update(float deltaTime)
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	m_agent.Update(deltaTime);
+	m_agent.update(deltaTime);
 //	m_ai.Update(deltaTime);
 
 	for (int i = 0; i < flockSize; i++)
 	{
-		m_flock[i].Update(deltaTime);
+		m_flock[i].update(deltaTime);
 	}
 
 	// exit the application
@@ -108,14 +108,14 @@ void BehaviourApp::draw()
 
 
 	char fps[32];
-	sprintf_s(fps, 32, "SPEED: %F", m_ai.GetVel().magnitude());
+	sprintf_s(fps, 32, "SPEED: %F", m_ai.getVel().magnitude());
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 
-	m_agent.Draw(m_2dRenderer);
+	m_agent.draw(m_2dRenderer);
 //	m_ai.Draw(m_2dRenderer);
 	for (int i = 0; i < flockSize; i++)
 	{
-		m_flock[i].Draw(m_2dRenderer);
+		m_flock[i].draw(m_2dRenderer);
 	}
 	// done drawing sprites
 	m_2dRenderer->end();

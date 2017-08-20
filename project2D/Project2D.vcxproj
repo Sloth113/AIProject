@@ -108,6 +108,7 @@
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseController.cpp" />
+    <ClCompile Include="NotCloseToCondition.cpp" />
     <ClCompile Include="PathsApp.cpp" />
     <ClCompile Include="PatrolState.cpp" />
     <ClCompile Include="ProjectApp.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="BehaviourApp.h" />
     <ClInclude Include="BlackBoard.h" />
     <ClInclude Include="ForceStillForce.h" />
+    <ClInclude Include="NotCloseToCondition.h" />
     <ClInclude Include="SetCurrentNode.h" />
     <ClInclude Include="SetPathCondition.h" />
     <ClInclude Include="CohesionForce.h" />

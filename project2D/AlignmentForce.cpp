@@ -15,10 +15,10 @@ MathDLL::Vector2 AlignmentForce::getForce(Agent * agent)
 
 	for (int i = 0; i < m_hoodSize; i++)
 	{
-		alignmentForce += m_neighbourhood[i].GetVel();
+		alignmentForce += m_neighbourhood[i].getVel();
 	}
 
 	alignmentForce /= m_hoodSize;
 
-	return (alignmentForce - agent->GetVel()) * m_weight;
+	return (alignmentForce - agent->getVel()) * m_weight;
 }

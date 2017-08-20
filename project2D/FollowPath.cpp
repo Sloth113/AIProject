@@ -14,7 +14,7 @@ BehaviourResult FollowPath::Update(Agent * agent, float deltaTime)
 	}
 	else
 	{
-		if ((agent->GetPos() - m_goToNode->data.pos).getMagSquare() < m_closeDist * m_closeDist)
+		if ((agent->getPos() - m_goToNode->data.pos).getMagSquare() < m_closeDist * m_closeDist)
 		{
 			m_goToNode = m_path.back();
 			m_path.pop_back();
